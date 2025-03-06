@@ -20,12 +20,20 @@ class TraningPipline:
             logging.info("error in data ingestion", e)
             raise customexception(e,sys)
     
-    
+    def start_data_transformation(self,train_data_path,test_data_path):
+        try:
+            datatransformation=DataTransformation()
+            train_arr,test_arr=datatransformation.initiate_data_transformation(train_data_path,test_data_path)
+            return train_arr,test_arr
+        except customexception as e:
+            logging.info("error in data transformation", e)
+            raise customexception(e,sys)
+        
     def start_traning(self):
         try:
             logging.info("Starting Training Pipeline")
             train_data_path,test_data_path=self.start_data_ingestion()
-            
+            train_arr,test_arr=self.start_data_transformation(train_data_path,test_data_path)
         except customexception as e:
             logging.info("error in training pipeline", e)
             raise customexception(e,sys)
@@ -33,4 +41,3 @@ class TraningPipline:
 trainer=TraningPipline()
 trainer.start_traning()
 print("Training Pipeline run successfully")
-
